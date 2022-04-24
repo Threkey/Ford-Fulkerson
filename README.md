@@ -55,8 +55,9 @@
   Ford-Fulkerson 알고리즘의 시간복잡도는 O((V+E)F), F는 최대유량(Flow)이다. 최대 유량이 커지면 커질수록 느리게 작동된다는 것이다.<br>
   또한, DFS방식을 사용하는 이 알고리즘은 비효율적으로 동작하는 경우가 있는데 이러한 단점을 보완한 Edmonds-Karp 알고리즘이 있다.
   
-  사진넣기
+  ![image](https://user-images.githubusercontent.com/101376843/164960517-94888f63-3f0c-422e-8339-2dc3663421a0.png)
   
+  △최악의 경우 예시
 
 ## Edmonds-Karp Algorithm
   DFS방식으로 그래프를 탐색하는 Ford-Fulkerson 알고리즘과 달리 Edmonds-Karp 알고리즘은 BFS(너비 우선 탐색)방식으로 그래프를 탐색하며 증가경로를 찾는다.<br>
