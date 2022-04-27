@@ -1,66 +1,64 @@
 package PackageNo2;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-
+import java.io.*;
+import java.util.*;
 
 public class Ford_Fulkerson {
-
-		static Map<Integer, Map<Integer, Integer>> residual;
-		static Map<Integer, Integer> prev;
-		static final int INF = Integer.MAX_VALUE;
-		public static boolean bfs(int src, int dst) {
-			Map<Integer, Boolean> visited = new HashMap<>();
-			Queue<Integer> q = new LinkedList<>();
-			visited.put(src, true);
-			q.add(src);
-			while(!q.isEmpty()) {
-				int u = q.poll();
-				Iterator<Integer> iter = residual.get(u).keySet().iterator();
-				while(iter.hasNext()) {
-					int v = iter.next();
-					if(!visited.getOrDefault(v, false) && residual.get(u).get(v) > 0) {
-						prev.put(v, u);
-						visited.put(v, true);
-						q.add(v);
-					}
-				}
-			}
-			
-			return visited.getOrDefault(dst, false);
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st = null;
+	
+	static final int MAX_SIZE = 52;
+	static int N, maxFlow, S, T = 25, capacity[][], flow[][];
+	static boolean check[];
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		capacity = new int[MAX_SIZE][MAX_SIZE];
+		flow = new int[MAX_SIZE][MAX_SIZE];
+		check = new boolean[MAX_SIZE];
+		
+		N = Integer.parseInt(br.readLine());
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			int start = charToInt(st.nextToken().charAt(0));
+			int end = charToInt(st.nextToken().charAt(0));
+			int weight = Integer.parseInt(st.nextToken());
+			capacity[start][end] += weight; 
+			capacity[end][start] += weight;
 		}
 		
-		public static int FordFulkerson(int src, int dst) {
-			int maxFlow = 0;
-			
-			while(bfs(src, dst)) {
-				int pathFlow = INF;
-	            
-	      for(int v = dst; v != src; v = prev.get(v)) {
-					int u = prev.get(v);
-					pathFlow = Math.min(pathFlow, residual.get(u).get(v));
-				}
-				
-				for(int v = dst; v != src; v = prev.get(v)) {
-					int u = prev.get(v);
-					residual.get(u).put(v, residual.get(u).get(v) - pathFlow); 
-					residual.get(v).put(u, residual.get(v).get(u) + pathFlow); 
-				}
-				
-				maxFlow += pathFlow;
-			}
-			
-			return maxFlow;
+		while(true) {
+			Arrays.fill(check, false);
+			int flowAmount = dfs(S, Integer.MAX_VALUE);
+			if(flowAmount == 0) break;
+			maxFlow += flowAmount;
 		}
-
-	
-	
-
-	public static void main(String[] args) {
-		System.out.println(FordFulkerson(1, 3));
+		
+		System.out.println(maxFlow);
 	}
+	
+	public static int dfs(int from, int amount) {
+		if(from == T) return amount;
 
+		if(check[from]) return 0;
+		check[from] = true;
+		
+		for(int to = 0; to < MAX_SIZE; to++) {
+			if(capacity[from][to] > flow[from][to]) {
+				int flowAmount = dfs(to, Math.min(amount, capacity[from][to]-flow[from][to]));
+				if(flowAmount > 0) {
+					flow[from][to] += flowAmount;
+					flow[to][from] -= flowAmount;
+					return flowAmount;
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
+	public static int charToInt(char c) {
+		if('a' <= c && c <= 'z') c -= 6;
+		return c - 65;
+	}
 }
