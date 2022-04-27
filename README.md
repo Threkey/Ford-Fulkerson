@@ -39,6 +39,24 @@
   ![image](https://user-images.githubusercontent.com/101376843/164891216-e434f1e2-a0ee-428d-9a99-5c0e5f2624b0.png)
   
   
+  
+  INPUT
+  ```
+  7
+A B 3
+A C 4
+B C 2
+C D 3
+B E 8
+E Z 5
+D Z 9
+```
+
+OUTPUT
+```
+7
+```
+  
   Ford-Fulkerson 알고리즘은
   
   1. 모든 간선과 역간선의 유량을 0으로 둔다
